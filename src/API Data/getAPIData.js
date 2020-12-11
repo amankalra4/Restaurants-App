@@ -1,10 +1,11 @@
 import Axios from "axios";
 import { CITY_CODE_URL, CUISINES_LIST_URL, ENTITY_URL, RESTURANTS_LIST_URL } from "../URLs/URL";
 
+let API_KEY = process.env.REACT_APP_ZOMATO_API_KEY;
 let apiHeader = {
     headers: {
         'Accept': `application/json`,
-        'user-key': `99be1b474711cda8cdbb3db159d64e61`
+        'user-key': API_KEY
     }
 };
 
