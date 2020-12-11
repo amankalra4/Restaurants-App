@@ -1,6 +1,6 @@
 ## Overview About the Project
 
-This project fovuses on the idea of displaying various cuisines from a particular location. And from the
+This project focuses on the idea of displaying various cuisines from a particular location. And from the
 cusinies avialble, user can view restaurants. The data displayed on the screen is retrieved with the help of Zomato's API.
 
 This appications is made responsive with the help of CSS media queries.
