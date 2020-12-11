@@ -1,0 +1,69 @@
+.Cuisines {
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 5px;
+    box-sizing: border-box;
+    grid-column-gap: 2em;
+    grid-row-gap: 2em;
+    margin-left: 5%;
+    margin-bottom: 2%;
+}
+
+.Items {
+    border: 1px solid black;
+    box-shadow: 3px -2px 5px 0px rgb(22, 22, 22);
+    cursor: pointer;
+    border-radius: 2px;
+    outline: none;
+}
+
+.CuisinesText {
+    text-align: center;
+    color: black;
+    font-size: larger;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.ProceedText {
+    float: right;
+    color: black;
+    font-size: larger;
+    font-weight: 600;
+    font-style: italic;
+    padding: 1em;
+}
+
+.ProceedText i {
+    border: solid #dc143c;
+    border-width: 0 6px 6px 0;
+    display: inline-block;
+    padding: 6px;
+}
+
+.ProceedText span {
+    padding: 8px;
+    margin: 0 0.5em;
+    cursor: pointer;
+}
+
+.ClickMe {
+    transform: rotate(-45deg);
+}
+
+@media screen and (max-width: 550px) {
+    .Cuisines {
+        grid-template-columns: 1fr 1fr;
+        margin: 0;
+    }
+    
+}
+
+@media screen and (max-width: 850px) {
+    .ProceedText {
+        float: none;
+        text-align: center;
+        padding: 0;
+    }
+}

@@ -1,0 +1,37 @@
+.apiContent {
+    margin: 2rem 0.5em;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.city {
+    border: 1px solid black;
+}
+
+.ListText {
+    text-align: center;
+    color: black;
+    font-size: larger;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.SingleCity {
+    text-align: center;
+    border: 1px solid black;
+    width: 30%;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 550px) {
+    .SingleCity {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    .SingleCity {
+        width: 75%;
+    }
+}

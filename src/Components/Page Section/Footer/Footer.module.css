@@ -1,0 +1,13 @@
+.Footer {
+    width: 100%;
+    height: 4rem;
+    background-color: rgb(41, 40, 40);
+    color: white;
+    text-align: center;
+}
+
+@media screen and (max-width:380px) {
+    .Footer {
+        height: 7rem;
+    }
+}

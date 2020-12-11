@@ -1,0 +1,115 @@
+.Heading {
+    text-align: center;
+    color: black;
+    font-size: larger;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.Restaurants {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1em 1em;
+    padding: 0.5em;
+    margin: 1rem;
+}
+
+.RestaurantDetails {
+    border: 1px solid black;
+    text-align: center;
+    box-shadow: 6px -6px 10px 0px rgb(22, 22, 22);
+    color: rgb(8, 21, 24);
+    font-style: italic;
+    background-image: linear-gradient(to bottom right, rgb(253, 177, 177), rgb(248, 248, 230));
+}
+
+.RestaurantDetails img {
+    width: 20%;
+    height: 10vh;
+}
+
+.DropdownDiv {
+    float: right;
+    width: 30%;
+    margin: 1rem;
+}
+
+.DropdownDiv select {
+    width: 60%;
+    padding: 0.5rem 1.5rem;
+    margin: 0 1rem;
+    box-sizing: border-box;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.PaginationDiv {
+    margin-left: 13%;
+}
+
+.PageNumbers {
+    padding: 1rem 1.2rem;
+    margin: 0.3rem;
+    border: none;
+    outline: none;
+    border-radius: 10%;
+    cursor: pointer;
+    font-size: medium;
+    font-weight: 600;
+    background-color: #048638;
+    color: white;
+}
+
+.TopButton {
+    position: fixed;
+    bottom: 0.5rem;
+    right: 1rem;
+    padding: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: medium;
+    font-weight: 400;
+    background-color: #048638;
+    color: white;
+}
+
+@media screen and (max-width: 550px) {
+    .Restaurants {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    .Restaurants {
+        grid-template-columns: 1fr;
+        padding: 0;
+        margin: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    .DropdownDiv {
+        float: none;
+        text-align: center;
+        padding: 0;
+        width: 100%;
+        margin: 2rem auto;
+    }
+    .DropdownDiv select {
+        width: 50%;
+        padding: 0.5rem 1.5rem;
+        margin: 0 1rem;
+        box-sizing: border-box;
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid black;
+    }
+    .PaginationDiv {
+        text-align: center;
+        margin: 0;
+    }
+}

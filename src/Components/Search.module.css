@@ -1,0 +1,56 @@
+.Search {
+    width: 100%;
+    background-image: url('../assets/background_image.jpg');
+    background-color: rgb(243, 168, 183);
+    min-height: 200px;
+    box-sizing: border-box;
+}
+
+.innerDiv {
+    box-sizing: border-box;
+    position: relative;
+    top: 3.8rem;
+    padding: 10px 0;
+}
+
+.Search input {
+    font-size: larger;
+    font-weight: 500;
+    padding: 10px;
+    box-sizing: border-box;
+    border: none;
+    float: left;
+    margin-left: 35%;
+    outline: none;
+    text-transform: capitalize;
+}
+
+.FindButton {
+    width: 10%;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #048638;
+    color: white;
+    border: none;
+    box-sizing: border-box;
+    font-size: larger;
+    font-weight: 500;
+    outline: none;
+}
+
+@media screen and (max-width: 550px) {
+    .Search input {
+        width: 50%;
+        margin-left: 16%;
+    }
+    .FindButton {
+        width: 20%;
+    }
+}
+
+@media screen and (max-width: 300px) {
+    .Search input {
+        width: 60%;
+        margin-left: 10%;
+    }
+}

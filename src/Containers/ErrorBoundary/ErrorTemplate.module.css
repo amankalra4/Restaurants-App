@@ -1,0 +1,17 @@
+.ErrorTemplate {
+    text-align: center;
+    font-size: larger;
+    font-weight: 600;
+    font-style: oblique;
+    position: absolute;
+    top: 40%;
+    box-sizing: border-box;
+    width: 100%;
+    color: #dc143c;
+}
+
+@media screen and (max-width: 550px) {
+    .ErrorTemplate {
+        left: 0;
+    }
+}
