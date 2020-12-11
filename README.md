@@ -2,6 +2,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This project fovuses on the idea of displaying various cuisines from a particular location. And from the
+cusinies avialble, user can view restaurants. The data displayed on the screen is retrieved with the help of Zomato's API.
+
+This appications is made responsive with the help of CSS media queries.
+
+This project involves most of the core JS and RecatJS concepts like:
+    - State & Props Management
+    - Axios (for fetching data)
+    - Use of Lifecycle Methods in React
+    - Error Boundaries
+    - React Router
+
 ## Available Scripts
 
 In the project directory, you can run:
