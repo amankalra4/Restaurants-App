@@ -33,15 +33,17 @@ class Restaurants extends PureComponent {
         else {
             this.setState({locationModal: true});
         }
-        let top = document.getElementById('topButton');
-        window.onscroll = () => {
-            if(document.body.scrollTop > 60 || document.documentElement.scrollTop > 150) {
-                top.style.display = 'block';
+        // if(this.props.queryProp !== '') {
+            let top = document.getElementById('topButton');
+            window.onscroll = () => {
+                if(document.body.scrollTop > 60 || document.documentElement.scrollTop > 150) {
+                    top.style.display = 'block';
+                }
+                else {
+                    top.style.display = 'none';
+                }
             }
-            else {
-                top.style.display = 'none';
-            }
-        }
+        // }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -185,7 +187,7 @@ class Restaurants extends PureComponent {
                 </div>
             )
         }
-        if(this.props.queryProp !== '' && !this.state.loading) {
+        if(this.props.queryProp !== '' && !this.state.loading && this.state.restaurantData[this.state.currentPage].length !== 0) {
             pageTitle = (
                 <p className = {styles.Heading}>
                     Displaying Page {this.state.currentPage} results out of
@@ -258,7 +260,14 @@ class Restaurants extends PureComponent {
                         </button>
                     ))}
                 </div>
-                <button id = 'topButton' className = {styles.TopButton} onClick = {this.handleTop}>Top</button>
+                {this.state.numberOfResults !== 0 && !this.state.locationModal &&
+                    <button 
+                        id = 'topButton' 
+                        className = {styles.TopButton} 
+                        onClick = {this.handleTop}>
+                        Top
+                    </button>
+                }
                 {this.state.showModal 
                     && 
                     (

@@ -1,11 +1,12 @@
-## Overview About the Project
+# Overview About the Project
 
-This project focuses on the idea of displaying various cuisines from a particular location. And from the
-cusinies avialble, user can view restaurants. The data displayed on the screen is retrieved with the help of Zomato's API.
+This project is made with the help of APIs provided by Zomato. 
 
-This appications is made responsive with the help of CSS media queries.
+This web application focuses on the idea of displaying various cuisines from a particular location. And from the cusinies available, user can view restaurants. User can click on the restaurant name to view more details on Zomato's website or if opened in mobile, the user can view restaurant details in Zomato's application.
 
-This project involves most of the core JS and RecatJS concepts like:
+This web application is made responsive with the help of CSS media queries.
+
+The project involves core JS and ReactJS concepts like:
     - State & Props Management
     - Axios (for fetching data)
     - Use of Lifecycle Methods in React
