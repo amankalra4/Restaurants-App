@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router';
-import { getResturants } from '../API Data/getAPIData';
+import { getRestaurants } from '../API Data/getAPIData';
+import CommonDisplay from '../Components/Page Section/Common Display/CommonDisplay';
 import Modal from '../Components/UI/Modal';
 import Spinner from '../Components/UI/Spinner';
 import styles from './Restaurants.module.css';
@@ -27,13 +28,8 @@ class Restaurants extends PureComponent {
             obj[key] = value;
         }
         this.setState({searchParamObj: {...this.state.searchParamObj, ...obj}});
-        if(this.props.queryProp !== ''){
+        if(this.props.queryProp !== '') {
             this.apiCall(obj);
-        }
-        else {
-            this.setState({locationModal: true});
-        }
-        // if(this.props.queryProp !== '') {
             let top = document.getElementById('topButton');
             window.onscroll = () => {
                 if(document.body.scrollTop > 60 || document.documentElement.scrollTop > 150) {
@@ -43,7 +39,10 @@ class Restaurants extends PureComponent {
                     top.style.display = 'none';
                 }
             }
-        // }
+        }
+        else {
+            this.setState({locationModal: true});
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -53,7 +52,7 @@ class Restaurants extends PureComponent {
     }
 
     apiCall = (obj) => {
-        getResturants(obj['entityId'], obj['entityType'], obj['cuisineIds'], 0, this.state.endCount)
+        getRestaurants(obj['entityId'], obj['entityType'], obj['cuisineIds'], 0, this.state.endCount)
         .then(data => {
             if(data.data.results_found >= 100) {
                 this.setState({resultsFound: 100})
@@ -71,7 +70,7 @@ class Restaurants extends PureComponent {
             this.setState({loading: false});
         })
         .catch(e => {
-            console.log(`An error was encountered while fetching the resturants: ${e}`);
+            console.error(`An error was encountered while fetching the restaurants: ${e}`);
         });
     }
 
@@ -81,7 +80,7 @@ class Restaurants extends PureComponent {
         if(!this.state.restaurantData.hasOwnProperty(val) && this.state.currentPage !== val) {
             this.setState({currentPage: val});
             this.setState({endCount: this.state.endCount + 10});
-            getResturants(this.state.searchParamObj['entityId'], this.state.searchParamObj['entityType'], 
+            getRestaurants(this.state.searchParamObj['entityId'], this.state.searchParamObj['entityType'], 
                             this.state.searchParamObj['cuisineIds'], this.state.endCount, 
                             totalRestaurantsCount)
             .then(data => {
@@ -92,7 +91,7 @@ class Restaurants extends PureComponent {
                 }
             })
             .catch(e => {
-                console.log(`An error was encountered while fetching the resturants of page number: ${val}: ${e}`);
+                console.error(`An error was encountered while fetching the restaurants of page number: ${val}: ${e}`);
             });
         }
         else if(this.state.currentPage === val) {
@@ -140,11 +139,17 @@ class Restaurants extends PureComponent {
     }
 
     toggleModal = () => {
-        this.setState({showModal: !this.state.showModal});
+        this.setState((state, props) => ({
+            showModal: !state.showModal
+        }));
+        // this.setState({showModal: !this.state.showModal});
     }
 
     toggleLocationModal = () => {
-        this.setState({locationModal: !this.state.locationModal});
+        this.setState((state, props) => ({
+            locationModal: !state.locationModal
+        }))
+        // this.setState({locationModal: !this.state.locationModal});
     }
 
     handleTop = () => {
@@ -153,7 +158,7 @@ class Restaurants extends PureComponent {
     }
 
     render () {
-        let iterationTimes = [], dropDown = null, pageTitle = null, spinner = null; 
+        let iterationTimes = [], dropDown = null, pageTitle = null, spinner = null, commonDisplay = null; 
 
         for(let i = 1; i <= this.state.numberOfResults; i++) {
             iterationTimes.push(i);
@@ -161,7 +166,7 @@ class Restaurants extends PureComponent {
 
         let noRestaurantsModalText  = (
             <Modal showModal = {this.state.showModal} toggleModal = {this.toggleModal}>
-                <p>No Restaurants could be found.</p>
+                <p>OOPS!! No restaurant found for the cusinie.</p>
             </Modal>
         );
         let samePageModalText = (
@@ -171,7 +176,7 @@ class Restaurants extends PureComponent {
         );
         let locationModalText = (
             <Modal showModal = {this.state.locationModal} toggleModal = {this.toggleLocationModal}>
-                <p>Please enter a location.</p>
+                <p>OOPS!! No result.</p>
             </Modal>
         );
 
@@ -196,71 +201,95 @@ class Restaurants extends PureComponent {
             )
         }
         if(this.props.queryProp !== '' && this.state.loading) {
-            spinner = <Spinner/>
+            spinner = <Spinner/>;
+        }
+        if(this.props.queryProp === '' && this.state.resultsFound === null) {
+            commonDisplay = <CommonDisplay data = 'any restaurant' />;
         }
 
         return (
-            <div>
+            <React.Fragment>
+                {commonDisplay}
                 {spinner}
                 {pageTitle}
                 {dropDown}
-                <div id = 'Restaurants' className = {styles.Restaurants}>
-                {
-                    Object.keys(this.state.restaurantData).length !== 0 &&
-                    this.state.restaurantData.hasOwnProperty(this.state.currentPage) &&
-                    this.state.restaurantData[this.state.currentPage]
-                    .map(val => (
-                            <div key = {val.restaurant.R.res_id} className = {styles.RestaurantDetails}>
-                                <a href = {val.restaurant.events_url} 
-                                   target = '_blank' 
-                                   rel = 'noreferrer'
-                                   style = {{fontSize: '1.5rem', cursor: 'pointer'}}>
-                                        <strong><u>{val.restaurant.name}</u></strong>
-                                </a>
-                                <p>
-                                    <strong>Address: </strong>
-                                    {val.restaurant.location.address}
-                                </p>
-                                <i className = 'fa fa-clock-o'></i><span> {val.restaurant.timings}</span>
-                                <p>
-                                    <strong>Cost for 2 people: </strong>
-                                    &#8377; {val.restaurant.average_cost_for_two}
-                                </p>
-                                <p>
-                                    <strong>Rating: </strong>
-                                    {val.restaurant.user_rating.aggregate_rating === 0 
-                                        ?
-                                            `No rating available as of now`
-                                        :
-                                            <span>
-                                                {val.restaurant.user_rating.aggregate_rating} &#9733;
+                {this.props.queryProp !== '' && 
+                    <React.Fragment>
+                        <div id = 'Restaurants' className = {styles.Restaurants}>
+                            {
+                                Object.keys(this.state.restaurantData).length !== 0 &&
+                                this.state.restaurantData.hasOwnProperty(this.state.currentPage) &&
+                                this.state.restaurantData[this.state.currentPage]
+                                .map(val => (
+                                        <div key = {val.restaurant.R.res_id} 
+                                            className = {styles.RestaurantDetails}>
+                                            <a href = {val.restaurant.events_url} 
+                                            target = '_blank' 
+                                            rel = 'noreferrer'
+                                            style = {{fontSize: '1.5rem', cursor: 'pointer'}}>
+                                                    <strong><u>{val.restaurant.name}</u></strong>
+                                            </a>
+                                            <p>
+                                                <strong>Address:&nbsp;</strong>
+                                                {val.restaurant.location.address}
+                                            </p>
+                                            <i className = 'fa fa-clock-o'></i>
+                                            <span>&nbsp;
+                                                {val.restaurant.timings === '' 
+                                                    ? 
+                                                        `We couldn't get the timings of restaurant.` 
+                                                    :
+                                                        val.restaurant.timings
+                                                }
                                             </span>
-                                    }
-                                </p>
-                                <p><strong>Online Delivery: </strong>
-                                    {val.restaurant.has_online_delivery === 1 
-                                        ? 
-                                            `Available`
-                                        : 
-                                            `Unavailable`
-                                    }
-                                </p>
-                                <i className = 'fa fa-phone'></i><span> {val.restaurant.phone_numbers}</span>
-                            </div>
-                        ))
+                                            <p>
+                                                <strong>Avg Cost for 2 people:&nbsp;</strong>
+                                                {val.restaurant.average_cost_for_two === 0 
+                                                    ?
+                                                        `We couldn't get the data.`
+                                                    :
+                                                        `${val.restaurant.currency}${val.restaurant.average_cost_for_two}`
+                                                }
+                                            </p>
+                                            <p>
+                                                <strong>Rating:&nbsp;</strong>
+                                                {val.restaurant.user_rating.aggregate_rating === 0 
+                                                    ?
+                                                        `No rating available as of now.`
+                                                    :
+                                                        <span>
+                                                            {val.restaurant.user_rating.aggregate_rating} &#9733;
+                                                        </span>
+                                                }
+                                            </p>
+                                            <p><strong>Online Delivery:&nbsp;</strong>
+                                                {val.restaurant.has_online_delivery === 1 
+                                                    ? 
+                                                        `Available`
+                                                    : 
+                                                        `Unavailable`
+                                                }
+                                            </p>
+                                            <i className = 'fa fa-phone'></i><span>&nbsp;{val.restaurant.phone_numbers}</span>
+                                        </div>
+                                    ))
+                            }
+                        </div>
+                        <div className = {styles.PaginationDiv}>
+                            {iterationTimes.map((val, index) => (
+                                <button 
+                                    className = {styles.PageNumbers} 
+                                    key = {index}
+                                    onClick = {() => this.handlePageClick(val)}>
+                                {val}
+                                </button>
+                            ))}
+                        </div>
+                    </React.Fragment>
                 }
-                </div>
-                <div className = {styles.PaginationDiv}>
-                    {iterationTimes.map((val, index) => (
-                        <button 
-                            className = {styles.PageNumbers} 
-                            key = {index}
-                            onClick = {() => this.handlePageClick(val)}>
-                        {val}
-                        </button>
-                    ))}
-                </div>
-                {this.state.numberOfResults !== 0 && !this.state.locationModal &&
+                {this.props.queryProp !== '' && 
+                    this.state.numberOfResults !== 0 && 
+                        !this.state.locationModal &&
                     <button 
                         id = 'topButton' 
                         className = {styles.TopButton} 
@@ -269,22 +298,27 @@ class Restaurants extends PureComponent {
                     </button>
                 }
                 {this.state.showModal 
-                    && 
-                    (
-                        this.state.numberOfResults === 0 
                     ? 
-                        noRestaurantsModalText 
-                    : 
-                        (this.state.restaurantData[this.state.currentPage].length === 0
-                        ?
+                        <>
+                            {
+                            this.state.numberOfResults === 0 
+                        ? 
                             noRestaurantsModalText
-                        :
-                            samePageModalText
-                        )
-                    )
+                        : 
+                            (this.state.restaurantData[this.state.currentPage].length === 0
+                            ?
+                                {noRestaurantsModalText}
+                            :
+                                samePageModalText
+                            )
+                        }
+                        <CommonDisplay data = 'any restaurant' />
+                        </>
+                    :
+                        this.state.numberOfResults === 0 && <CommonDisplay data = 'any restaurant' />
                 }
                 {this.state.locationModal && locationModalText}
-            </div>
+            </React.Fragment>
         )
     }
 }

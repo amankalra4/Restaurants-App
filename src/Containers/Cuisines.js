@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router';
 import { getCuisines } from '../API Data/getAPIData';
+import CommonDisplay from '../Components/Page Section/Common Display/CommonDisplay';
 import Modal from '../Components/UI/Modal';
 import Spinner from '../Components/UI/Spinner';
 import styles from './Cuisines.module.css';
@@ -11,7 +12,7 @@ class Cuisines extends PureComponent {
         colorChange: {},
         showModal: false,
         loading: true,
-        loactionModal: false
+        noCuisineModal: false
     }
     
     componentDidMount() {
@@ -19,8 +20,8 @@ class Cuisines extends PureComponent {
         if(this.props.queryProp !== '') {
             this.apiCall();
         }
-        else {
-            this.setState({loactionModal: true});
+        if (this.state.cuisines.length === 0){
+            this.setState({noCuisineModal: true})
         }
     }
 
@@ -44,7 +45,7 @@ class Cuisines extends PureComponent {
             this.setState({loading: false});
         })
         .catch(e => {
-            console.log(`An error was encountered while fetching cuisine data: ${e}`);
+            console.error(`An error was encountered while fetching cuisine data: ${e}`);
         })
     }
 
@@ -98,11 +99,17 @@ class Cuisines extends PureComponent {
     }
 
     toggleModal = () => {
-        this.setState({showModal: !this.state.showModal});
+        this.setState((state, props) => ({
+            showModal: !state.showModal
+        }));
+        // this.setState({showModal: !this.state.showModal});
     }
 
-    toggleLocationModal = () => {
-        this.setState({loactionModal: !this.state.loactionModal});
+    toggleCuisineModal = (state, props) => {
+        this.setState((state, props) => ({
+            noCuisineModal: !state.noCuisineModal
+        }));
+        // this.setState({noCuisineModal: !this.state.noCuisineModal});
     }
 
     render () {
@@ -113,41 +120,47 @@ class Cuisines extends PureComponent {
         let newString = [charAtZero, ...str].join('');
         return (
             <React.Fragment>
-                {this.props.queryProp !== '' && 
+                {this.props.queryProp !== '' && this.state.cuisines.length !== 0 &&
                     <React.Fragment>
                         <p className = {styles.CuisinesText}>
                             Discover the best cuisines in {newString}
                         </p>
                         <p className = {styles.ProceedText}>
-                            Click here to proceed 
+                            Click to proceed 
                             <span onClick = {this.handleProceed}>
                                 <i className = {styles.ClickMe}></i>
                             </span>
                         </p>
                     </React.Fragment>
                 }
-                {this.props.queryProp !== '' && this.state.loading ? <Spinner/> :
-                    <div className = {styles.Cuisines}>
-                    {this.state.cuisines.map(val => (
-                        <div id = {`Items${val.cuisine.cuisine_id}`} 
-                             className = {styles.Items} 
-                             key = {val.cuisine.cuisine_id} 
-                             onClick = {() => this.handleClick(val.cuisine.cuisine_id)}>
-                            {val.cuisine.cuisine_name}
-                        </div>
-                    ))}
-                    </div>
+                {this.props.queryProp !== '' && this.state.loading 
+                    ? 
+                        <Spinner/> 
+                    :
+                       this.state.cuisines.length === 0
+                        ?
+                            <React.Fragment>
+                                <Modal showModal = {this.state.noCuisineModal} toggleModal = {this.toggleCuisineModal}>
+                                    <p>OOPS!! No cusinies found.</p>
+                                </Modal>
+                                <CommonDisplay data = 'any cuisine' />
+                            </React.Fragment>
+                        :
+                            <div className = {styles.Cuisines}>
+                                {this.state.cuisines.map(val => (
+                                    <div id = {`Items${val.cuisine.cuisine_id}`} 
+                                        className = {styles.Items} 
+                                        key = {val.cuisine.cuisine_id} 
+                                        onClick = {() => this.handleClick(val.cuisine.cuisine_id)}>
+                                        {val.cuisine.cuisine_name}
+                                    </div>
+                                ))}
+                            </div>
                 }
                 {this.state.showModal
                     &&
                     <Modal showModal = {this.state.showModal} toggleModal = {this.toggleModal}>
                         <p>Select atleast one cuisine!</p>
-                    </Modal>
-                }
-                {this.state.loactionModal
-                    &&
-                    <Modal showModal = {this.state.loactionModal} toggleModal = {this.toggleLocationModal}>
-                        <p>Please enter a location!</p>
                     </Modal>
                 }
             </React.Fragment>

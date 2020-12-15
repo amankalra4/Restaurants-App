@@ -73,14 +73,21 @@
     border-radius: 6px;
     cursor: pointer;
     font-size: medium;
-    font-weight: 400;
-    background-color: #048638;
+    font-weight: 600;
+    background-color: rgba(211, 29, 29, 0.8);
     color: white;
 }
 
 @media screen and (max-width: 550px) {
     .Restaurants {
         grid-template-columns: 1fr;
+    }
+    .PaginationDiv {
+        margin: 0 0 15% 0;
+    }
+    .TopButton {
+        right: 0.4rem;
+        bottom: 20%;
     }
 }
 
@@ -111,6 +118,5 @@
     }
     .PaginationDiv {
         text-align: center;
-        margin: 0;
     }
 }

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router';
 import { getCity, getEntity } from '../API Data/getAPIData';
+import CommonDisplay from '../Components/Page Section/Common Display/CommonDisplay';
 import Modal from '../Components/UI/Modal';
 import Spinner from '../Components/UI/Spinner';
 import styles from './List.module.css';
@@ -35,7 +36,7 @@ class List extends PureComponent {
             this.commonSetState(data);
         })
         .catch(e => {
-            console.log(`An error was encountered while fetching data from one of the APIs: ${e}`);
+            console.error(`An error was encountered while fetching data from one of the APIs: ${e}`);
         })
     }
 
@@ -57,7 +58,10 @@ class List extends PureComponent {
     }
 
     toggleModal = () => {
-        this.setState({showModal: !this.state.showModal});
+        this.setState((state, props) => ({
+            showModal: !state.showModal
+        }))
+        // this.setState({showModal: !this.state.showModal});
     }
 
     handleClick = (cityId) => {
@@ -79,39 +83,42 @@ class List extends PureComponent {
 
     render () {
         return (
-        <div className = {styles.apiContent}>
-            {this.state.loading ? <Spinner/> :
-            
-                this.state.storeCityDetails.length !== 0 && this.state.storeCityDetails[0].length !== 0
+            <div className = {styles.apiContent}>
+                {this.state.loading 
                     ? 
-                        <React.Fragment>
-                            <p className = {styles.ListText}>Found below related cities from your search: </p>
-                            { this.state.storeCityDetails[0].length !== 1
-                                ?
-                                    <div style = {{display: 'grid', gridTemplateColumns: '1fr 1fr', gridGap: '0.5em', cursor: 'pointer'}}>
-                                    {this.state.storeCityDetails[0].map((value, index) => (
-                                        <div onClick = {() => this.handleClick(this.state.cityId[index])} className = {styles.city} key = {index}>
-                                            <p><strong><i>City Name: </i></strong>{value.name}</p>
-                                            <p><strong><i>Country Name: </i></strong>{value.country_name}</p>
-                                        </div>
-                                    ))}
-                                    </div>
-                                :
-                                    <div className = {styles.SingleCity} onClick = {() => this.handleClick(this.state.cityId[0])}>
-                                        <p><strong><i>City Name: </i></strong>{this.state.storeCityDetails[0][0].name}</p>
-                                        <p><strong><i>Country Name: </i></strong>{this.state.storeCityDetails[0][0].country_name}</p>
-                                    </div>
-                            }
-                        </React.Fragment>
+                        <Spinner/> 
                     :
-                        <Modal showModal = {this.state.showModal} toggleModal = {this.toggleModal}>
-                            <p>OOPS!! No result.</p>
-                        </Modal>
-                
-
-            }
-            
-        </div>
+                        this.state.storeCityDetails.length !== 0 
+                            && this.state.storeCityDetails[0].length !== 0
+                        ? 
+                            <React.Fragment>
+                                <p className = {styles.ListText}>Found below related cities from your search: </p>
+                                { this.state.storeCityDetails[0].length !== 1
+                                    ?
+                                        <div style = {{display: 'grid', gridTemplateColumns: '1fr 1fr', gridGap: '0.5em', cursor: 'pointer'}}>
+                                        {this.state.storeCityDetails[0].map((value, index) => (
+                                            <div onClick = {() => this.handleClick(this.state.cityId[index])} className = {styles.city} key = {index}>
+                                                <p><strong><i>City Name: </i></strong>{value.name}</p>
+                                                <p><strong><i>Country Name: </i></strong>{value.country_name}</p>
+                                            </div>
+                                        ))}
+                                        </div>
+                                    :
+                                        <div className = {styles.SingleCity} onClick = {() => this.handleClick(this.state.cityId[0])}>
+                                            <p><strong><i>City Name: </i></strong>{this.state.storeCityDetails[0][0].name}</p>
+                                            <p><strong><i>Country Name: </i></strong>{this.state.storeCityDetails[0][0].country_name}</p>
+                                        </div>
+                                }
+                            </React.Fragment>
+                        :
+                            <React.Fragment>
+                                <Modal showModal = {this.state.showModal} toggleModal = {this.toggleModal}>
+                                    <p>OOPS!! No result.</p>
+                                </Modal>
+                                <CommonDisplay data = 'any location'/>
+                            </React.Fragment>
+                }
+            </div>
         )
     }
 }
