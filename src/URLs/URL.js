@@ -7,7 +7,7 @@ export const ENTITY_URL = `https://developers.zomato.com/api/v2.1/locations?quer
 // below URL returns the list of cuisines available in your city.
 export const CUISINES_LIST_URL = `https://developers.zomato.com/api/v2.1/cuisines?city_id=%s`;
 
-// below URL searches resturants based on - cuisinesId, establishmentsIds
-export const RESTURANTS_LIST_URL = 
+// below URL searches restaurants based on - cuisinesId, establishmentsIds
+export const RESTAURANTS_LIST_URL = 
 `https://developers.zomato.com/api/v2.1/search?entity_id=%s1&entity_type=%s2&start=%c1&count=%c2&cuisines=%s3`;
     

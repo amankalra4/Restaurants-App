@@ -25,7 +25,7 @@ const Search = (props) => {
             <div className = {styles.innerDiv}>
                 <input 
                     type = 'text'
-                    placeholder = 'Enter your city'
+                    placeholder = 'Enter city name'
                     spellCheck = 'false'
                     autoComplete = 'off'
                     value = {text}
